@@ -1,79 +1,66 @@
-import scala.{Option => _, Some => _, Either => _, _} // hide std library `Option`, `Some` and `Either`, since we are writing our own in this chapter
+import java.util.regex.Pattern
 
-sealed trait Option[+A] {
-  def map[B](f: A => B): Option[B] =
-    this match {
-      case None => None
-      case Some(x) => Some(f(x))
-    }
+// Referential Transparency
+// In der Vorlesung wurde anhand eines Beispiels mit StringBuilderg ezeigt, wie Nebeneffekte Referential Transparency verletzen.
+// Überlegen Sie sich ein anderes, einfaches Beispiel in dem Referential Transparency nicht gegeben ist.
 
-  def getOrElse[B >: A](default: => B): B =
-    this match {
-      case None => default
-      case Some(x) => x
-    }
+// Zunächst:
+val m = Pattern.compile("\\d\\d").matcher("a34sd39f")
+println(m.find()) //true
+println(m.group()) //34
 
-  def flatMap[B](f: A => Option[B]): Option[B] =
-    map(f).getOrElse(None)
+println(m.find()) //true
+println(m.group()) //39
 
-  //  vs:
-  //  map(f) getOrElse None
 
-  def orElse[B >: A](ob: => Option[B]): Option[B] =
-    this map (Some(_)) getOrElse ob
+// Auslagern von m.group()
+val m2 = Pattern.compile("\\d\\d").matcher("a34sd39f")
+println(m2.find()) //true
 
-  //  vs:
-  //  this.map(Some(_)).getOrElse(ob)
+val grp = m2.group()
+println(grp) //34
+println(m2.find()) //true
+println(grp) //39
 
-  def filter(f: A => Boolean): Option[A] =
-  //  if (this.map(f).getOrElse(false)) this
-  //  else None
-  //  vs:
-    this match {
-      case Some(a) if f(a) => this
-      case _ => None
-      //  vs:
-      //  flatMap(a => if (f(a)) Some(a) else None)
-    }
+
+
+
+// Fibonacci
+// Schreiben Sie eine rekursive Funktion, die die n-te Fibonacci Zahl berechnet.
+// Die Implementierung sollte eine lokale tail-rekursive Funktion verwenden.
+
+def fib(n: Int): Int = {
+  @annotation.tailrec
+  def go(n: Int, prev: Int, curr: Int): Int =
+    if (n == 0) prev
+    else go(n - 1, curr, prev + curr)
+
+  go(n, 0, 1)
 }
 
-case class Some[+A](get: A) extends Option[A]
-case object None extends Option[Nothing]
 
-object Option {
-  def failingFn(i: Int): Int = {
-    val y: Int = throw new Exception("fail!") // `val y: Int = ...` declares `y` as having type `Int`, and sets it equal to the right hand side of the `=`.
-    try {
-      val x = 42 + 5
-      x + y
-    }
-    catch {
-      case e: Exception => 43
-    } // A `catch` block is just a pattern matching block like the ones we've seen. `case e: Exception` is a pattern that matches any `Exception`, and it binds this value to the identifier `e`. The match returns the value 43.
-  }
+// Higher Order Functions
+// Implementieren Sie die polymorphe Funktion isSorted, die überprüft ob ein Array[A]
+// nach einer übergebenen Vergleichsfunktion sortiert ist.
 
-  def failingFn2(i: Int): Int = {
-    try {
-      val x = 42 + 5
-      x + ((throw new Exception("fail!")): Int) // A thrown Exception can be given any type; here we're annotating it with the type `Int`
-    }
-    catch {
-      case e: Exception => 43
-    }
-  }
+def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
+  @annotation.tailrec
+  def loop(i: Int): Boolean =
+    if (i >= as.length - 1) true
+    else if (gt(as(i), as(i + 1))) loop(i + 1)
+    else false
 
-  def mean(xs: Seq[Double]): Option[Double] =
-    if (xs.isEmpty) None
-    else Some(xs.sum / xs.length)
-
-  def variance(xs: Seq[Double]): Option[Double] = ???
-
-  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
-
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
-
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  loop(0)
 }
 
-Some(2).filter(x => x < 3)
 
+// Currying
+// Gegeben sind die beiden Funktionen f und g:
+def f(a: Int, b: Int): Int = a + b
+def g(a: Int)(b: Int): Int = a + b
+
+// Überlegen Sie welche der folgenden Aussagen wahr oder falsch sind:
+// curry(f)(1)(1) == f(1, 1)
+// curry(f)(1)(1) == g(1)(1)
+// uncurry(g)(1, 1) == g(1)(1)
+// uncurry(g)(1, 1) == f(1, 1)

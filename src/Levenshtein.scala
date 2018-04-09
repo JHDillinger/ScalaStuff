@@ -1,5 +1,3 @@
-package testpackage
-
 import scala.annotation.tailrec
 
 
@@ -11,7 +9,7 @@ object Levenshtein {
         case (0, r) => r
         case (l, 0) => l
         case (_, _) => {
-          lazy val cost = if (lhs(lhsi - 1) == rhs(rhsi - 1)) 0 else 1
+          val cost = if (lhs(lhsi - 1) == rhs(rhsi - 1)) 0 else 1
           min(
             helper(lhs, rhs, lhsi - 1, rhsi) + 1,
             helper(lhs, rhs, lhsi, rhsi - 1) + 1,
@@ -74,7 +72,7 @@ object Levenshtein {
   def min(nums: Int*): Int = nums.min
 
   def main(args: Array[String]): Unit = {
-        val test = levHaskell("test", "tast")
+        val test = lev("test", "tast")
         println(test)
 
   }
