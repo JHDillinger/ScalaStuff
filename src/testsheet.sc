@@ -59,6 +59,13 @@ def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
 def f(a: Int, b: Int): Int = a + b
 def g(a: Int)(b: Int): Int = a + b
 
+def test[A,B](x:A)(g: A => B):B = g(x)
+test(2)(g(3))
+//test(2)(f(3))
+
+val l = List(1,2,3,4)
+List.map(l)(g(2))
+
 // Überlegen Sie welche der folgenden Aussagen wahr oder falsch sind:
 // curry(f)(1)(1) == f(1, 1)
 // curry(f)(1)(1) == g(1)(1)

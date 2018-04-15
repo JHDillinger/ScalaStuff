@@ -170,6 +170,22 @@ object List { // `List` companion object. Contains functions for creating and wo
       case (Cons(ha, ta), Cons(hb, tb)) => Cons(f(ha, hb), zipWith(ta, tb)(f))
     }
 
+  def main(args: Array[String]): Unit = {
+    // empty list of doubles
+    val ex1: List[Double] = Nil
+    // list with an int
+    val ex2: List[Int] = Cons(1, Nil)
+    // list with two strings
+    val ex3 = Cons("a", Cons("b", Nil))
+
+    val ex4 = List(1,2,3)
+
+    println(ex1)
+    println(ex2)
+    println(ex3)
+    println(tail(ex4))
+  }
+
 
 }
 
