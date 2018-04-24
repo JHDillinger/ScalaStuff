@@ -23,8 +23,6 @@ println(m2.find()) //true
 println(grp) //39
 
 
-
-
 // Fibonacci
 // Schreiben Sie eine rekursive Funktion, die die n-te Fibonacci Zahl berechnet.
 // Die Implementierung sollte eine lokale tail-rekursive Funktion verwenden.
@@ -37,6 +35,8 @@ def fib(n: Int): Int = {
 
   go(n, 0, 1)
 }
+
+fib(0)
 
 
 // Higher Order Functions
@@ -53,18 +53,19 @@ def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
   loop(0)
 }
 
+isSorted[Int](Array(1,2,3), (a,b) => a < b)
 
 // Currying
 // Gegeben sind die beiden Funktionen f und g:
 def f(a: Int, b: Int): Int = a + b
 def g(a: Int)(b: Int): Int = a + b
 
-def test[A,B](x:A)(g: A => B):B = g(x)
-test(2)(g(3))
+def h[A, B](x: A, g: A => B): B = g(x)
+val add3 = h(1, g(1))
 //test(2)(f(3))
 
-val l = List(1,2,3,4)
-List.map(l)(g(2))
+//val l = List(1, 2, 3, 4)
+//List.map(l)(g(2))
 
 // Überlegen Sie welche der folgenden Aussagen wahr oder falsch sind:
 // curry(f)(1)(1) == f(1, 1)
