@@ -1,7 +1,7 @@
-package testpackage.either
+package introFP.either
 
 //hide std library `Option` and `Either`, since we are writing our own in this chapter
-//import scala.{Either => _, Left => _, Option => _, Right => _}
+import scala.{Either => _, Left => _, Option => _, Right => _}
 
 
 sealed trait Either[+E,+A] {

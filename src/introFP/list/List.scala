@@ -1,5 +1,5 @@
 
-package testpackage.list
+package introFP.list
 
 sealed trait List[+A] // `List` data type, parameterized on a type, `A`
 case object Nil extends List[Nothing] // A `List` data constructor representing the empty list
@@ -186,8 +186,12 @@ object List { // `List` companion object. Contains functions for creating and wo
     val t2 = foldLeft(Cons(1, Nil), List[Int]())((acc, h) => Cons(h, acc))
     println(t2)
 
-    val asdf = Cons(1, List())
-    println(List() == Nil)
+    val asdf = List(1,3)
+
+
+    for {
+      h <- asdf
+    }yield print(h)
 
   }
 
