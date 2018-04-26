@@ -1,8 +1,8 @@
 package testpackage
 //hide std library `Option` and `Either`, since we are writing our own in this chapter
+import scala.{Option => _, Either => _, Right =>_, Left=>_,_}
+import testpackage.{List => _, _}
 import scala.collection.immutable.List
-import scala.{Option => _, Either => _, _}
-import testpackage.{List => _,_}
 
 sealed trait Either[+E,+A] {
   def map[B](f: A => B): Either[E, B] =
