@@ -83,6 +83,9 @@ object Either {
 
     val p = mkPerson("test", -1)
     println(test)
+
+    val asdfa= Some(2).map(_+1)
+    println(asdfa)
   }
 
 

@@ -188,11 +188,7 @@ object List { // `List` companion object. Contains functions for creating and wo
 
     val asdf = List(1,3)
 
-
-    for {
-      h <- asdf
-    }yield print(h)
-
+    println(map(List(1,2))(x => x+123))
   }
 
 

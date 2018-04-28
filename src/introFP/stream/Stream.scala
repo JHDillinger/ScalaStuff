@@ -232,7 +232,7 @@ object Stream {
   //  warum ist die verwendung von "n" im zweiten argument von unfold
   //  kein "suspicious shadowing"?
   def fromViaUnfold(n: Int): Stream[Int] =
-    unfold(n)(n => Some((n, n + 1)))
+    unfold(n)(a => Some((a, a + 1)))
 
   def constantViaUnfold[A](a: A): Stream[A] =
     unfold(a)(_ => Some((a, a)))

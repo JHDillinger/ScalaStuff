@@ -1,6 +1,6 @@
-//import introFP.stream._
+package sqroot
 
-object Main {
+object NRSqroot {
 
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
     f(z) match {
@@ -13,9 +13,10 @@ object Main {
 
   //    def repeat[A](f: A => A)(a: A): Seq[A] = a +: repeat(f)(f(a))
   def repeat[A](f: A => A)(a: A): Stream[A] = Stream.cons(a, repeat(f)(f(a)))
-//
-  def repeat2[A](f: A => A)(a:A):Stream[A] =
-    unfold(a){n => Some((n, f(n)))}
+
+  //
+  def repeat2[A](f: A => A)(a: A): Stream[A] =
+    unfold(a) { n => Some((n, f(n))) }
 
   @annotation.tailrec
   def within(eps: Double)(l: Seq[Double]): Double =
@@ -40,7 +41,7 @@ object Main {
     }
 
 
-  def sqroot(a: Double, eps: Double, n: Double): Double = within(eps)(repeat[Double](next(n))(a))
+  def sqroot(a: Double, eps: Double, n: Double): Double = within(eps)(repeat2[Double](next(n))(a))
 
   def relativesqroot(a: Double, eps: Double, n: Double): Double = relative(eps)(repeat[Double](next(n))(a))
 
