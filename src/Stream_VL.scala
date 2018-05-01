@@ -1,4 +1,4 @@
-package Stream_VL
+package introFP.Stream
 
 sealed trait Stream[+A] {
 
