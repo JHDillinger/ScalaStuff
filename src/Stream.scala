@@ -1,6 +1,8 @@
-package Stream_VL
+package introFP.Stream
 
 sealed trait Stream[+A] {
+  // make methods from companion object available
+  import Stream._
 
   def headOption: Option[A] = this match {
     case Empty => None
@@ -23,20 +25,23 @@ sealed trait Stream[+A] {
   }
 
   def take(n: Int): Stream[A] = this match {
-    case Cons(h, t) if n > 1 => Stream.cons(h(), t().take(n - 1))
-    case Cons(h, _) if n == 1 => Stream.cons(h(), Empty)
-    case _ => Empty
+    case Cons(h, t) => {
+      if (n > 1) cons(h(), t().take(n - 1))
+      else if (n == 1) cons(h(), empty)
+      else empty
+    }
+    case Empty => empty
   }
 
   @annotation.tailrec
   final def drop(n: Int): Stream[A] = this match {
-    case Cons(_, t) if n > 0 => t().drop(n - 1)
-    case _ => this
+    case Cons(_, t) => if (n > 0) t().drop(n - 1) else this
+    case Empty => this
   }
 
   def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
     case Cons(x, xs) => f(x(), xs().foldRight(z)(f))
-    case _ => z
+    case Empty => z
   }
 
   def existsViaFoldRight(p: A => Boolean): Boolean =
@@ -47,6 +52,9 @@ sealed trait Stream[+A] {
 
 
   //  Aufgabe 1: map, filter, append, flatMap
+  //  Use the smart constructors from the Stream object
+
+  def append[B >: A](b: => Stream[B]): Stream[B] = ???
 
   //  Aufgabe 2: takeWhile
   //  a)
@@ -89,7 +97,7 @@ object Stream {
       case None => empty
     }
 
-  val ones: Stream[Int] = Stream.cons(1, ones) // infinite ones
+  val ones: Stream[Int] = cons(1, ones) // infinite ones
 
   val fibs = {
     def go(f0: Int, f1: Int): Stream[Int] =
