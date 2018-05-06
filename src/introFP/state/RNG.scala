@@ -63,6 +63,14 @@ object RNG {
     }
   }
 
+  def main(args: Array[String]): Unit = {
+    // Anwendungsbeispiele
+    val rng = Simple(42)
+    val d = double(rng)
+    println(d)
+    val id = intDouble(rng)
+    println(id)
+  }
 
 
 }

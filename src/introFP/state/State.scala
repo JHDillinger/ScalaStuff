@@ -2,17 +2,17 @@ package introFP.state
 
 
 case class State[S, +A](run: S => (A, S)) {
-  //    make the functions from object available
-  import State._
-
-  def map[B](f: A => B): State[S, B] =
-    ???
+  def map[B](f: A => B): State[S, B] = State(run(_) match {
+    case (a, newS) => (f(a), newS)
+  })
 
   def map2[B, C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
-    ???
+    flatMap(a => sb.map(b => f(a, b)))
 
-  def flatMap[B](f: A => State[S, B]): State[S, B] =
-    ???
+  def flatMap[B](f: A => State[S, B]): State[S, B] = State(s => {
+    val (a, s1) = run(s)
+    f(a).run(s1)
+  })
 }
 
 object State {
@@ -24,6 +24,19 @@ object State {
   def get[S]: State[S, S] = State(s => (s, s))
 
   def set[S](s: S): State[S, Unit] = State(_ => ((), s))
+
+  def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = {
+    def go(s: S, actions: List[State[S, A]], acc: List[A]): (List[A], S) =
+      actions match {
+        case Nil => (acc.reverse, s)
+        case h :: t => h.run(s) match {
+          case (a, s2) => go(s2, t, a :: acc)
+        }
+      }
+
+    State((s: S) => go(s, sas, List()))
+  }
+
 
 }
 
