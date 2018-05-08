@@ -19,22 +19,22 @@ object NRSqroot {
     unfold(a) { n => Some((n, f(n))) }
 
   @annotation.tailrec
-  def within(eps: Double)(l: Seq[Double]): Double =
-    (eps, l) match {
-      case (_, Seq()) => 0
-      case (_, Seq(x)) => x
-      case (_, a +: b +: rest) => {
+  def within(eps: Double)(ds: Seq[Double]): Double =
+    ds match {
+      case Seq() => 0
+      case Seq(x) => x
+      case a +: b +: rest => {
         if (Math.abs(a - b) <= eps) b
         else within(eps)(b +: rest)
       }
     }
 
   @annotation.tailrec
-  def relative(eps: Double)(l: Seq[Double]): Double =
-    (eps, l) match {
-      case (_, Seq()) => 0
-      case (_, Seq(x)) => x
-      case (_, a +: b +: rest) => {
+  def relative(eps: Double)(ds: Seq[Double]): Double =
+    ds match {
+      case Seq() => 0
+      case Seq(x) => x
+      case a +: b +: rest => {
         if (Math.abs(a / b - 1) <= eps) b
         else relative(eps)(b +: rest)
       }

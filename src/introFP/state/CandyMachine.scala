@@ -17,7 +17,7 @@ object Candy {
 
 }
 
-object Test {
+object TestCandy {
 
   import Candy._
 

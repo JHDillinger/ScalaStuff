@@ -244,7 +244,8 @@ object Stream {
   def main(args: Array[String]): Unit = {
     val test = Stream(1, 2, 3, 3, 4)
 
-    println(test.tails.toList)
+    val t = test.tails.map(s => s.toList).toList
+    println(t)
 
   }
 }
