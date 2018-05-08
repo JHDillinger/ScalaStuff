@@ -1,8 +1,8 @@
 package introFP.stream
+
 import Stream._
 
-sealed trait Stream[+A]{
-
+sealed trait Stream[+A] {
   def foldRight[B](z: => B)(f: (A, => B) => B): B = // The arrow `=>` in front of the argument type `B` means that the function `f` takes its second argument by name and may choose not to evaluate it.
     this match {
       case Cons(h, t) => f(h(), t().foldRight(z)(f)) // If `f` doesn't evaluate its second argument, the recursion never occurs.
@@ -166,7 +166,7 @@ sealed trait Stream[+A]{
     unfold(this) {
       case Empty => None
       case s => Some((s, s.drop(1)))
-    } append Stream(empty)
+    }.append(Stream(empty))
 
   //  5.16
 
@@ -237,15 +237,15 @@ object Stream {
   def constantViaUnfold[A](a: A): Stream[A] =
     unfold(a)(_ => Some((a, a)))
 
-//  val onesViaUnfold = constantViaUnfold(1)
+  //  val onesViaUnfold = constantViaUnfold(1)
   //  oder:
-    val onesViaUnfold = unfold(1)(_ => Some((1,1)))
+  val onesViaUnfold = unfold(1)(_ => Some((1, 1)))
 
   def main(args: Array[String]): Unit = {
     val test = Stream(1, 2, 3, 3, 4)
 
-    println(test.tails.toList)
-    test.tails
+    val t = test.tails.map(s => s.toList).toList
+    println(t)
 
   }
 }
