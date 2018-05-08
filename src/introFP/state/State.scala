@@ -37,7 +37,25 @@ object State {
     State((s: S) => go(s, sas, List()))
   }
 
+  val intProg: State[Int, Int] = for {
+    _ <- set[Int](3)
+    _ <- modify[Int](_ + 1)
+    _ <- modify[Int](_ * 3)
+    _ <- modify[Int](_ - 2)
+    result <- get
+  } yield result
+
+
+  //  Aufgabe 2:
+  val stringProg = ???
+
+  def stringProg2(str: List[String]): State[String, String] = ???
+
+  ////
+
+  def main(args: Array[String]): Unit = {
+    println(intProg.run(3)._1)
+  }
 
 }
-
 

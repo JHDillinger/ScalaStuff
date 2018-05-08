@@ -29,6 +29,7 @@ object RNG {
     val (i, r1) = rng.nextInt
     val (d, r2) = double(r1)
     ((i, d), r2)
+
   }
 
   type Rand[+A] = RNG => (A, RNG)
@@ -62,6 +63,18 @@ object RNG {
       if (i + (n - 1) - mod >= 0) unit(mod) else nonNegativeLessThan(n)
     }
   }
+
+  ////Aufgabe 1
+
+  def doubleInt(rng: RNG): ((Double, Int), RNG) = ???
+
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = ???
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+
+  def doubleViaMap: Rand[Double] = ???
+
+  ////
 
   def main(args: Array[String]): Unit = {
     // Anwendungsbeispiele
