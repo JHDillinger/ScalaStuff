@@ -83,6 +83,12 @@ object RNG {
     println(d)
     val id = intDouble(rng)
     println(id)
+
+    // Um tatsächlich ein "sinnvolles" Ergebnis zu bekommen,
+    // muss an Funktionen wie map2 noch ein RNG übergeben werden
+    val test = map2(int, int)(_ + _)(rng)
+    println(test)
+
   }
 
 

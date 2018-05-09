@@ -55,6 +55,12 @@ object State {
 
   def main(args: Array[String]): Unit = {
     println(intProg.run(3)._1)
+    
+    val s = stringProg.run("Hello")._1
+    println(s)
+    val strings = List(" ", "World", " ", "Program", "!")
+    val test = stringProg2(strings).run("Hello")._1
+    println(test)
   }
 
 }
