@@ -119,7 +119,7 @@ sealed trait Stream[+A] {
 
   def takeWhileViaUnfold(p: A => Boolean): Stream[A] =
     unfold(this) {
-      case Cons(h, t) if p(h()) => Some(h(), t())
+      case Cons(h, t) => if (p(h())) Some(h(), t()) else None
       case _ => None
     }
 
@@ -244,7 +244,9 @@ object Stream {
   def main(args: Array[String]): Unit = {
     val test = Stream(1, 2, 3, 3, 4)
 
-    val t = test.tails.map(s => s.toList).toList
+    val t = test.takeWhileViaUnfold(_ <3).toList
+
+//    val t = test.tails.map(s => s.toList).toList
     println(t)
 
   }
