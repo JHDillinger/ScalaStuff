@@ -51,6 +51,19 @@ object RNG {
       (f(a, b), r2)
     }
 
+  def _map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): RNG => (C, RNG) =
+    rng => {
+      val (a, r1) = ra(rng)
+      val (b, r2) = rb(r1)
+      (f(a, b), r2)
+    }
+
+  def __map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C)(rng: RNG): (C, RNG) = {
+    val (a, r1) = ra(rng)
+    val (b, r2) = rb(r1)
+    (f(a, b), r2)
+  }
+
   def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] =
     rng => {
       val (a, r1) = f(rng)
